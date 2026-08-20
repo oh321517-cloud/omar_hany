@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omar Hany | Pro Fitness Suite</title>
+
+    <style>
+        /* الألوان: أحمر + أزرق + أسود */
+        :root {
+            --primary-red: #ef4444;
+            --primary-blue: #38bdf8;
+            --bg-dark: #090d16;
+            --card-bg: #131c2e;
+            --card-border: #1e293b;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* الهيدر */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 8%;
+            background-color: rgba(9, 13, 22, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--primary-red);
+        }
+
+        .logo-glow {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary-blue);
+            text-shadow: 0 0 12px var(--primary-blue);
+        }
+
+        .navbar ul {
+            display: flex;
+            list-style: none;
+            gap: 15px;
+        }
+
+        .navbar ul li a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        .navbar ul li a:hover {
+            color: var(--primary-red);
+        }
+
+        /* Modal الترحيب وتسجيل البيانات */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(9, 13, 22, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 2px solid var(--primary-red);
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-card h2 {
+            color: var(--primary-red);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: right;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+            background: #090d16;
+            color: #fff;
+            outline: none;
+        }
+
+        .btn-red {
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--primary-red) 0%, #b91c1c 100%);
+            color: #fff;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .btn-red:hover {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+        }
+
+        .btn-blue {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #0284c7 100%);
+            color: #090d16;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-blue:hover {
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+            color: #fff;
+        }
+
+        /* الأقسام العامة */
+        .section {
+            padding: 3.5rem 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-blue);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-sub);
+            margin-bottom: 2.5rem;
+        }
+
+        /* لوحة الماكروز */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .dash-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            border-top: 3px solid var(--primary-red);
+        }
+
+        .dash-card span {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-blue);
+        }
+
+        /* جدول متابعة الجيم الأسبوعي */
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-top: 1.5rem;
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            padding: 1.2rem;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            text-align: center;
+        }
+
+        .day-card.attended {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .day-status {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary-red);
+        }
+
+        .day-card.attended .day-status {
+            color: #22c55e;
+        }
+
+        /* متابعة الميزان والوزن */
+        .weight-tracker-container {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-inline {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-inline input {
+            flex: 1;
+            padding: 0.8rem;
+            background: #090d16;
+            border: 1px solid var(--card-border);
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        .weight-list {
+            list-style: none;
+        }
+
+        .weight-list li {
+            background: #090d16;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            border-right: 4px solid var(--primary-red);
+        }
+
+        /* قسم أنظمة التمارين والأيام */
+        .splits-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .split-btn {
+            padding: 10px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .split-btn.active, .split-btn:hover {
+            background: var(--primary-red);
+            color: #fff;
+        }
+
+        .days-schedule {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .schedule-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--card-border);
+            border-top: 4px solid var(--primary-blue);
+        }
+
+        .schedule-card h3 {
+            color: var(--primary-blue);
+            margin-bottom: 0.8rem;
+        }
+
+        .schedule-card ul {
+            padding-right: 20px;
+            color: var(--text-sub);
+        }
+
+        /* قسم الأكلات والمصادر */
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .food-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .food-card h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .food-card.protein h3 { color: var(--primary-red); }
+        .food-card.carbs h3 { color: var(--primary-blue); }
+        .food-card.fats h3 { color: #eab308; }
+
+        .food-card ul {
+            list-style: none;
+        }
+
+        .food-card ul li {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background-color: #05070e;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- Modal الترحيب وتسجيل البيانات -->
+    <div id="welcomeModal" class="modal-overlay">
+        <div class="modal-card">
+            <h2>أهلاً يا دبابة! 💪</h2>
+            <p>أدخل بياناتك الحالية لحساب احتياجاتك فوراً:</p>
+            
+            <form id="userDataForm">
+                <div class="form-group">
+                    <label>الاسم:</label>
+                    <input type="text" id="userName" placeholder="اسمك الكريم" required>
+                </div>
+                <div class="form-group">
+                    <label>السن:</label>
+                    <input type="number" id="userAge" value="18" required>
+                </div>
+                <div class="form-group">
+                    <label>الطول (سم):</label>
+                    <input type="number" id="userHeight" value="183" required>
+                </div>
+                <div class="form-group">
+                    <label>الوزن (كجم):</label>
+                    <input type="number" id="userWeight" value="71" required>
+                </div>
+                <div class="form-group">
+                    <label>الهدف التدريبي:</label>
+                    <select id="userGoal">
+                        <option value="bulk">تضخيم وبناء عضلات (Bulk)</option>
+                        <option value="cut">تنشيف وحرق دهون (Cut)</option>
+                        <option value="maintain">ثبات الوزن</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-red">دخول المنصة</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- الهيدر -->
+    <header class="navbar">
+        <div class="logo-glow">&lt; O M A R &nbsp; H A N Y &gt;</div>
+        <nav>
+            <ul>
+                <li><a href="#dash">السعرات</a></li>
+                <li><a href="#attendance">حضور الجيم</a></li>
+                <li><a href="#weight">تتبع الوزن</a></li>
+                <li><a href="#splits">الأنظمة والأيام</a></li>
+                <li><a href="#nutrition">مصادر الأكل</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- لوحة التحكم والسعرات -->
+    <section id="dash" class="section">
+        <h2 id="greetingText" class="section-title">أهلاً بك يا بطل!</h2>
+        <p class="section-subtitle">احتياجك اليومي الموصى به بناءً على بياناتك</p>
+
+        <div class="dashboard-grid">
+            <div class="dash-card">
+                <p>السعرات الحرارية</p>
+                <span id="dashCal">0</span>
+                <p style="font-size:0.8rem; color:#94a3b8;">سعرة / يوم</p>
+            </div>
+            <div class="dash-card">
+                <p>البروتين اليومي</p>
+                <span id="dashProt">0</span>g
+                <p style="font-size:0.8rem; color:#94a3b8;">بناء الألياف</p>
+            </div>
+            <div class="dash-card">
+                <p>الكاربوهيدرات</p>
+                <span id="dashCarb">0</span>g
+                <p style="font-size:0.8rem; color:#94a3b8;">مصدر الطاقة</p>
+            </div>
+            <div class="dash-card">
+                <p>الدهون الصحية</p>
+                <span id="dashFat">0</span>g
+                <p style="font-size:0.8rem; color:#94a3b8;">دعم الهرمونات</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- جدول تسجيل حضور الجيم الأسبوعي -->
+    <section id="attendance" class="section" style="background: #0d1322;">
+        <h2 class="section-title">📅 جدول الالتزام الأسبوعي بالجيم</h2>
+        <p class="section-subtitle">اضغط على اليوم لتسجيل حضورك في الجيم وتتبع التزامك</p>
+
+        <div class="days-grid" id="daysGrid">
+            <!-- سيتم توليد أيام الأسبوع هنا -->
+        </div>
+    </section>
+
+    <!-- جدول متابعة الميزان وتطور الوزن -->
+    <section id="weight" class="section">
+        <h2 class="section-title">⚖️ سجل متابعة الوزن (الميزان)</h2>
+        <p class="section-subtitle">سجل وزنك أسبوعياً لمتابعة مدى تقدمك وتطور بنيتك الجسدية</p>
+
+        <div class="weight-tracker-container">
+            <div class="input-inline">
+                <input type="number" id="newWeight" placeholder="الوزن الحالي (كجم)" step="0.1">
+                <button onclick="addWeightLog()" class="btn-blue">حفظ الميزان</button>
+            </div>
+
+            <ul id="weightList" class="weight-list">
+                <!-- سيتم إدراج سجلات الوزن هنا -->
+            </ul>
+        </div>
+    </section>
+
+    <!-- أنظمة التمارين والأيام بالتفصيل -->
+    <section id="splits" class="section" style="background: #0d1322;">
+        <h2 class="section-title">🏋️ أنظمة التدريب وتوزيع الأيام</h2>
+        <p class="section-subtitle">اختر النظام لمعرفة الترتيب الصحيح للأيام والتمرين لكل عضلة</p>
+
+        <div class="splits-nav">
+            <button class="split-btn active" onclick="loadSplit('ppl')">PPL (Push/Pull/Legs)</button>
+            <button class="split-btn" onclick="loadSplit('arnold')">PPL + Arnold Split</button>
+            <button class="split-btn" onclick="loadSplit('upperlower')">Upper / Lower</button>
+            <button class="split-btn" onclick="loadSplit('pro')">Pro Split (تجميع)</button>
+        </div>
+
+        <div id="scheduleContainer" class="days-schedule">
+            <!-- أيام النظام كروت هنا -->
+        </div>
+    </section>
+
+    <!-- قسم مصادر الأكل والأغذية -->
+    <section id="nutrition" class="section">
+        <h2 class="section-title">🥗 دليل الأطعمة ومصادر التغذية</h2>
+        <p class="section-subtitle">أهم المصادر الغذائية لتغطي بها احتياجك اليومي من الماكروز</p>
+
+        <div class="food-grid">
+            <div class="food-card protein">
+                <h3>🥩 مصادر البروتين</h3>
+                <ul>
+                    <li>• صدور الدجاج (31g بروتين لكل 100g)</li>
+                    <li>• اللحم البقري الصافي (26g بروتين لكل 100g)</li>
+                    <li>• سمك التونة والبلطي</li>
+                    <li>• البيض الكامل والبيض الأبيض</li>
+                    <li>• الجبن القريش واللبن اليوناني</li>
+                    <li>• ويه بروتين (Protein Powder)</li>
+                </ul>
+            </div>
+
+            <div class="food-card carbs">
+                <h3>🍚 مصادر الكاربوهيدرات</h3>
+                <ul>
+                    <li>• الأرز الأبيض والبني</li>
+                    <li>• الشوفان الكامل</li>
+                    <li>• البطاطس والبطاطا الحلوة</li>
+                    <li>• المكرونة وعيش الشوفان/البلدي</li>
+                    <li>• الموز والمخبوزات الصحية</li>
+                </ul>
+            </div>
+
+            <div class="food-card fats">
+                <h3>🥑 مصادر الدهون الصحية</h3>
+                <ul>
+                    <li>• زيت الزيتون البكر</li>
+                    <li>• المكسرات (الموز، اللوز، الجوز)</li>
+                    <li>• صفار البيض</li>
+                    <li>• الأفوكادو</li>
+                    <li>• زبدة الفول السوداني الطبيعية</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <p>إنشاء Omar Hany</p>
+        <small>&lt; Designed & Developed by Omar Hany &copy; 2026 &gt;</small>
+    </footer>
+
+    <script>
+        // حفظ البيانات وحساب الماكروز
+        document.getElementById('userDataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('userName').value;
+            const age = parseFloat(document.getElementById('userAge').value);
+            const height = parseFloat(document.getElementById('userHeight').value);
+            const weight = parseFloat(document.getElementById('userWeight').value);
+            const goal = document.getElementById('userGoal').value;
+
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            let tdee = bmr * 1.55;
+
+            if(goal === 'bulk') tdee += 400;
+            else if(goal === 'cut') tdee -= 400;
+
+            let protein = weight * 2.2;
+            let fats = weight * 0.9;
+            let carbs = (tdee - ((protein * 4) + (fats * 9))) / 4;
+
+            document.getElementById('greetingText').innerText = `أهلاً يا دبابة (${name})! 👋`;
+            document.getElementById('dashCal').innerText = Math.round(tdee);
+            document.getElementById('dashProt').innerText = Math.round(protein);
+            document.getElementById('dashCarb').innerText = Math.round(carbs);
+            document.getElementById('dashFat').innerText = Math.round(fats);
+
+            document.getElementById('welcomeModal').classList.add('hidden');
+        });
+
+        // جدول حضور الجيم
+        const weekDays = ["السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
+        const daysContainer = document.getElementById('daysGrid');
+
+        weekDays.forEach(day => {
+            const dayCard = document.createElement('div');
+            dayCard.className = 'day-card';
+            dayCard.innerHTML = `
+                <h4>${day}</h4>
+                <div class="day-status">لم أذهب ❌</div>
+                <button onclick="toggleAttendance(this)" class="btn-blue" style="margin-top:8px; padding:4px 8px; font-size:0.8rem;">تغيير الحالة</button>
+            `;
+            daysContainer.appendChild(dayCard);
+        });
+
+        function toggleAttendance(btn) {
+            const card = btn.parentElement;
+            const statusText = card.querySelector('.day-status');
+            
+            if(card.classList.contains('attended')) {
+                card.classList.remove('attended');
+                statusText.innerText = 'لم أذهب ❌';
+            } else {
+                card.classList.add('attended');
+                statusText.innerText = 'تم الذهاب 💪';
+            }
+        }
+
+        // متابعة الوزن
+        function addWeightLog() {
+            const w = document.getElementById('newWeight').value;
+            if(!w) return;
+
+            const ul = document.getElementById('weightList');
+            const li = document.createElement('li');
+            li.innerHTML = `<span>الوزن: <strong>${w} كجم</strong></span> <small style="color:#38bdf8;">${new Date().toLocaleDateString('ar-EG')}</small>`;
+            ul.prepend(li);
+
+            document.getElementById('newWeight').value = '';
+        }
+
+        // تفاصيل أيام الأنظمة التدريبية
+        const splitsScheduleData = {
+            ppl: [
+                { day: "اليوم الأول: دفع (Push)", exercises: ["صدر عالي بالبار", "تجميع صدر بالدمبلز", "ضغط أكتاف أمامي", "رفرفة جانبي للأكتاف", "ترايسبس بالحبل"] },
+                { day: "اليوم الثاني: سحب (Pull)", exercises: ["سحب عالي للظهر (Lat Pulldown)", "سحب أرضي بالبار (Barbell Row)", "سحب للكتف الخلفي (Face Pull)", "بايسبس بالبار", "هامركيرل للساعد"] },
+                { day: "اليوم الثالث: أرجل (Legs)", exercises: ["سكوات بالبار (Squat)", "كبس أرجل (Leg Press)", "تمديد أمامي (Leg Extension)", "تجميع خلفي (Leg Curl)", "سمانة واقف"] },
+                { day: "اليوم الرابع: راحة (Rest)", exercises: ["استشفاء، تغذية جيدة، مشي خفيف أو نوم كافٍ."] },
+                { day: "اليوم الخامس: كرر الدفع والسحب والأرجل", exercises: ["تكرار الجدول بشكل تدوري مع التبديل في الزوايا."] }
+            ],
+            arnold: [
+                { day: "اليوم الأول: صدر وظهر (Chest & Back)", exercises: ["سوبر سيت: بنش بريس + سحب عالي للظهر", "سوبر سيت: تجميع صدر دمبلز + سحب أرضي", "بل أفر للصدر والظهر"] },
+                { day: "اليوم الثاني: أكتاف وذراعين (Shoulders & Arms)", exercises: ["ضغط أرنولد للأكتاف", "رفرفة جانبي خفيف", "سوبر سيت: بايسبس بار + ترايسبس حبل", "هامركيرل + ترايسبس فوق الرأس"] },
+                { day: "اليوم الثالث: أرجل (Legs)", exercises: ["سكوات عميق", "طعن بالدمبلز (Lunges)", "خلفيات أرجل", "سمانة"] },
+                { day: "اليوم الرابع: راحة (Rest)", exercises: ["استراحة واستشفاء عضلات الجسم."] }
+            ],
+            upperlower: [
+                { day: "اليوم الأول: الجزء العلوي (Upper)", exercises: ["ضغط صدر بالبار", "سحب عالي للظهر", "ضغط كتف بالدمبلز", "ترايسبس وبايسبس"] },
+                { day: "اليوم الثاني: الجزء السفلي (Lower)", exercises: ["سكوات بار", "تجميع خلفي أرجل", "كبس أرجل", "بطن وسمانة"] },
+                { day: "اليوم الثالث: راحة (Rest)", exercises: ["راحة تامة."] },
+                { day: "اليوم الرابع: تكرار العلوي والسفلي", exercises: ["إعادة التمرين بتركيز على أوزان أعلى."] }
+            ],
+            pro: [
+                { day: "اليوم الأول: صدر (Chest)", exercises: ["4 تمارين مختلفة للصدر بزوايا متعددة + بطن."] },
+                { day: "اليوم الثاني: ظهر (Back)", exercises: ["4 تمارين استهداف سحب وسُمك الظهر."] },
+                { day: "اليوم الثالث: أكتاف (Shoulders)", exercises: ["أمامي، جانبي، وخلفي مع ترابيس."] },
+                { day: "اليوم الرابع: أرجل (Legs)", exercises: ["تمرن كوادز، خلفيات، وسمانة بالكامل."] },
+                { day: "اليوم الخامس: ذراعين (Arms)", exercises: ["بايسبس وترايسبس وسواعد."] }
+            ]
+        };
+
+        function loadSplit(key) {
+            document.querySelectorAll('.split-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const container = document.getElementById('scheduleContainer');
+            container.innerHTML = '';
+
+            splitsScheduleData[key].forEach(item => {
+                let listHtml = item.exercises.map(ex => `<li>• ${ex}</li>`).join('');
+                container.innerHTML += `
+                    <div class="schedule-card">
+                        <h3>${item.day}</h3>
+                        <ul>${listHtml}</ul>
+                    </div>
+                `;
+            });
+        }
+
+        // تحميل النظام الأول تلقائياً
+        loadSplit('ppl');
+    </script>
+</body>
+</html>
