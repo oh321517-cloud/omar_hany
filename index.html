@@ -3,659 +3,849 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Omar Hany | Pro Fitness Suite</title>
-
+    <title>My Gym | تطبيق الجيم المتكامل</title>
     <style>
-        /* الألوان: أحمر + أزرق + أسود */
         :root {
-            --primary-red: #ef4444;
-            --primary-blue: #38bdf8;
-            --bg-dark: #090d16;
-            --card-bg: #131c2e;
-            --card-border: #1e293b;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #334155;
+            --primary-blue: #3b82f6;
+            --primary-hover: #2563eb;
             --text-main: #f8fafc;
-            --text-sub: #94a3b8;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --accent-glow: rgba(59, 130, 246, 0.2);
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            scroll-behavior: smooth;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
-            line-height: 1.6;
+            padding: 25px 15px;
+            max-width: 1150px;
+            margin: 0 auto;
+            direction: rtl;
         }
 
-        /* الهيدر */
-        .navbar {
+        /* Top Header */
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 8%;
-            background-color: rgba(9, 13, 22, 0.95);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid var(--primary-red);
+            background: var(--bg-card);
+            padding: 20px 25px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
         }
 
-        .logo-glow {
+        .logo-box .logo {
             font-size: 1.6rem;
             font-weight: 800;
-            letter-spacing: 2px;
             color: var(--primary-blue);
-            text-shadow: 0 0 12px var(--primary-blue);
+            letter-spacing: 1px;
         }
 
-        .navbar ul {
-            display: flex;
-            list-style: none;
-            gap: 15px;
+        .logo-box .created-by {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 3px;
         }
 
-        .navbar ul li a {
-            color: var(--text-main);
-            text-decoration: none;
+        .welcome-badge {
+            background: var(--accent-glow);
+            color: var(--primary-blue);
+            padding: 8px 16px;
+            border-radius: 20px;
             font-weight: 600;
-            font-size: 0.95rem;
-            transition: 0.3s;
+            border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
-        .navbar ul li a:hover {
-            color: var(--primary-red);
-        }
-
-        /* Modal الترحيب وتسجيل البيانات */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(9, 13, 22, 0.95);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .modal-card {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 16px;
-            border: 2px solid var(--primary-red);
-            box-shadow: 0 0 25px rgba(239, 68, 68, 0.3);
-            max-width: 480px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .modal-card h2 {
-            color: var(--primary-red);
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-            text-align: right;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.3rem;
-            font-size: 0.9rem;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: 1px solid var(--card-border);
-            background: #090d16;
-            color: #fff;
-            outline: none;
-        }
-
-        .btn-red {
-            padding: 0.8rem 2rem;
-            background: linear-gradient(135deg, var(--primary-red) 0%, #b91c1c 100%);
-            color: #fff;
-            font-weight: bold;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-            width: 100%;
-            font-size: 1rem;
-        }
-
-        .btn-red:hover {
-            box-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
-        }
-
-        .btn-blue {
-            padding: 0.8rem 1.5rem;
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #0284c7 100%);
-            color: #090d16;
-            font-weight: bold;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-blue:hover {
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
-            color: #fff;
-        }
-
-        /* الأقسام العامة */
-        .section {
-            padding: 3.5rem 8%;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-            color: var(--primary-blue);
-        }
-
-        .section-subtitle {
-            text-align: center;
-            color: var(--text-sub);
-            margin-bottom: 2.5rem;
-        }
-
-        /* لوحة الماكروز */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .dash-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-            text-align: center;
-            border-top: 3px solid var(--primary-red);
-        }
-
-        .dash-card span {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary-blue);
-        }
-
-        /* جدول متابعة الجيم الأسبوعي */
-        .days-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 15px;
-            margin-top: 1.5rem;
-        }
-
-        .day-card {
-            background: var(--card-bg);
-            padding: 1.2rem;
-            border-radius: 10px;
-            border: 1px solid var(--card-border);
-            text-align: center;
-        }
-
-        .day-card.attended {
-            border-color: #22c55e;
-            background: rgba(34, 197, 94, 0.1);
-        }
-
-        .day-status {
-            margin-top: 8px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: var(--primary-red);
-        }
-
-        .day-card.attended .day-status {
-            color: #22c55e;
-        }
-
-        /* متابعة الميزان والوزن */
-        .weight-tracker-container {
-            background: var(--card-bg);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .input-inline {
+        /* Navigation Tabs */
+        .nav-tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 25px;
         }
 
-        .input-inline input {
-            flex: 1;
-            padding: 0.8rem;
-            background: #090d16;
-            border: 1px solid var(--card-border);
-            color: #fff;
-            border-radius: 8px;
+        .tab-btn {
+            background-color: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 12px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.25s ease;
         }
 
-        .weight-list {
-            list-style: none;
-        }
-
-        .weight-list li {
-            background: #090d16;
-            padding: 0.8rem 1rem;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            border-right: 4px solid var(--primary-red);
-        }
-
-        /* قسم أنظمة التمارين والأيام */
-        .splits-nav {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
-
-        .split-btn {
-            padding: 10px 20px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
+        .tab-btn:hover {
             color: var(--text-main);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
+            background-color: var(--bg-input);
         }
 
-        .split-btn.active, .split-btn:hover {
-            background: var(--primary-red);
-            color: #fff;
+        .tab-btn.active {
+            background-color: var(--primary-blue);
+            color: #ffffff;
+            border-color: var(--primary-blue);
+            box-shadow: 0 4px 14px var(--accent-glow);
         }
 
-        .days-schedule {
+        /* Main Content Layout */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
 
-        .schedule-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--card-border);
-            border-top: 4px solid var(--primary-blue);
+        .card {
+            background-color: var(--bg-card);
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
         }
 
-        .schedule-card h3 {
+        .card h2 {
+            font-size: 1.25rem;
             color: var(--primary-blue);
-            margin-bottom: 0.8rem;
-        }
-
-        .schedule-card ul {
-            padding-right: 20px;
-            color: var(--text-sub);
-        }
-
-        /* قسم الأكلات والمصادر */
-        .food-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .food-card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-        }
-
-        .food-card h3 {
-            margin-bottom: 1rem;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .food-card.protein h3 { color: var(--primary-red); }
-        .food-card.carbs h3 { color: var(--primary-blue); }
-        .food-card.fats h3 { color: #eab308; }
-
-        .food-card ul {
-            list-style: none;
+        .card h3 {
+            color: #60a5fa;
+            margin: 15px 0 10px 0;
+            font-size: 1.05rem;
         }
 
-        .food-card ul li {
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            color: var(--text-sub);
+        /* Form Elements */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .input-group input, 
+        .input-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-input);
+            color: var(--text-main);
             font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
         }
 
-        footer {
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .result-box {
+            margin-top: 18px;
+            padding: 14px;
+            background-color: rgba(15, 23, 42, 0.6);
+            border-radius: 10px;
+            border: 1px dashed var(--primary-blue);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Table Design */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        th, td {
+            padding: 12px;
             text-align: center;
-            padding: 2.5rem 1rem;
-            background-color: #05070e;
-            border-top: 1px solid var(--card-border);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .hidden { display: none !important; }
+        th {
+            background-color: var(--bg-input);
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        td input, td select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: white;
+            width: 90%;
+        }
+
+        /* Weight History List */
+        .history-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .history-list li {
+            background-color: var(--bg-input);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Timer UI */
+        .timer-display {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            color: var(--primary-blue);
+            margin: 20px 0;
+            font-family: monospace;
+        }
+
+        .timer-btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        ul {
+            list-style-position: inside;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        ul li strong {
+            color: var(--text-main);
+        }
+
+        p {
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Modal الترحيب وتسجيل البيانات -->
-    <div id="welcomeModal" class="modal-overlay">
-        <div class="modal-card">
-            <h2>أهلاً يا دبابة! 💪</h2>
-            <p>أدخل بياناتك الحالية لحساب احتياجاتك فوراً:</p>
-            
-            <form id="userDataForm">
-                <div class="form-group">
-                    <label>الاسم:</label>
-                    <input type="text" id="userName" placeholder="اسمك الكريم" required>
+    <header>
+        <div class="logo-box">
+            <div class="logo">💪 MY GYM</div>
+            <div class="created-by">Created by Omar</div>
+        </div>
+        <div class="welcome-badge" id="header-welcome">أهلاً بك يا بطل 👋</div>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'profile-tab')">👤 الملف الشخصي</button>
+        <button class="tab-btn" onclick="openTab(event, 'calculators-tab')">🧮 الحاسبات</button>
+        <button class="tab-btn" onclick="openTab(event, 'schedule-tab')">📅 الجدول والأنظمة</button>
+        <button class="tab-btn" onclick="openTab(event, 'nutrition-tab')">🥗 التغذية والمصادر</button>
+        <button class="tab-btn" onclick="openTab(event, 'tracker-tab')">📈 المتابعة والصور</button>
+        <button class="tab-btn" onclick="openTab(event, 'timer-tab')">⏱️ مؤقت الراحة</button>
+    </div>
+
+    <!-- 1. PROFILE TAB -->
+    <div id="profile-tab" class="tab-content active">
+        <div class="grid-layout">
+            <div class="card">
+                <h2>إدخال البيانات الأساسية</h2>
+                <div class="input-group">
+                    <label>الاسم</label>
+                    <input type="text" id="user-name" placeholder="أدخل اسمك">
                 </div>
-                <div class="form-group">
-                    <label>السن:</label>
-                    <input type="number" id="userAge" value="18" required>
+                <div class="input-group">
+                    <label>السن</label>
+                    <input type="number" id="user-age" placeholder="18">
                 </div>
-                <div class="form-group">
-                    <label>الطول (سم):</label>
-                    <input type="number" id="userHeight" value="183" required>
+                <div class="input-group">
+                    <label>الطول (سم)</label>
+                    <input type="number" id="user-height" placeholder="183">
                 </div>
-                <div class="form-group">
-                    <label>الوزن (كجم):</label>
-                    <input type="number" id="userWeight" value="71" required>
+                <div class="input-group">
+                    <label>الوزن الحالي (كجم)</label>
+                    <input type="number" id="user-weight" placeholder="71">
                 </div>
-                <div class="form-group">
-                    <label>الهدف التدريبي:</label>
-                    <select id="userGoal">
-                        <option value="bulk">تضخيم وبناء عضلات (Bulk)</option>
-                        <option value="cut">تنشيف وحرق دهون (Cut)</option>
-                        <option value="maintain">ثبات الوزن</option>
+                <div class="input-group">
+                    <label>الهدف الرئيسي</label>
+                    <select id="user-goal">
+                        <option value="تضخيم">تضخيم (Bulking)</option>
+                        <option value="تنشيف">تنشيف (Cutting)</option>
+                        <option value="ثبات الوزن">ثبات الوزن (Maintenance)</option>
                     </select>
                 </div>
-                <button type="submit" class="btn-red">دخول المنصة</button>
-            </form>
+                <button class="btn" onclick="saveProfile()">حفظ البيانات 💾</button>
+            </div>
+
+            <div class="card">
+                <h2>لوحة التحكم المباشرة</h2>
+                <div class="result-box">
+                    <p id="dash-greeting"><strong>الاسم:</strong> --</p>
+                    <p id="dash-info"><strong>البيانات:</strong> احفظ بياناتك لتحديث اللوحة تلقائياً.</p>
+                    <p id="dash-target-cal"><strong>السعرات المقترحة:</strong> --</p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- الهيدر -->
-    <header class="navbar">
-        <div class="logo-glow">&lt; O M A R &nbsp; H A N Y &gt;</div>
-        <nav>
+    <!-- 2. CALCULATORS TAB -->
+    <div id="calculators-tab" class="tab-content">
+        <div class="grid-layout">
+            <div class="card">
+                <h2>حاسبة كتلة الجسم (BMI)</h2>
+                <button class="btn" onclick="calcBMI()">احسب تلقائياً من أحدث وزن</button>
+                <div class="result-box" id="bmi-out">اضغط للحساب بناءً على أحدث وزن مسجل.</div>
+            </div>
+
+            <div class="card">
+                <h2>حاسبة نسبة الدهون التقريبية (%)</h2>
+                <div class="input-group">
+                    <label>محيط الوسط عند السرة (سم)</label>
+                    <input type="number" id="waist-cm" placeholder="مثال: 80">
+                </div>
+                <div class="input-group">
+                    <label>محيط الرقبة (سم)</label>
+                    <input type="number" id="neck-cm" placeholder="مثال: 38">
+                </div>
+                <button class="btn" onclick="calcBodyFat()">احسب نسبة الدهون فوراً 💧</button>
+                <div class="result-box" id="fat-out">أدخل القياسات ثم اضغط احسب.</div>
+            </div>
+
+            <div class="card">
+                <h2>حاسبة السعرات (TDEE)</h2>
+                <div class="input-group">
+                    <label>مستوى النشاط</label>
+                    <select id="activity-level">
+                        <option value="1.2">خفيف / بدون تمرين</option>
+                        <option value="1.375">تمارين 1-3 أيام/أسبوع</option>
+                        <option value="1.55">تمارين 3-5 أيام/أسبوع</option>
+                        <option value="1.725">تمارين شاقة 6-7 أيام</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="calcCalories()">احسب الاحتياج اليومي</button>
+                <div class="result-box" id="cal-out">النتيجة ستظهر هنا...</div>
+            </div>
+
+            <div class="card">
+                <h2>حاسبة الوجبة السريعة (جاهزة)</h2>
+                <div class="input-group">
+                    <label>اختر الوجبة</label>
+                    <select id="preset-meal" onchange="calcPresetMeal()">
+                        <option value="custom">-- اختر الوجبة من القائمة --</option>
+                        <option value="chicken_100">صدور دجاج مطبوخة (100 جرام)</option>
+                        <option value="meat_100">لحم بقري مفروم/صافي (100 جرام)</option>
+                        <option value="eggs_2">عدد 2 بيضة مسلوقة كاملة</option>
+                        <option value="egg_whites_3">عدد 3 بياض بيض</option>
+                        <option value="tuna_can">علبة تونة مصفاة من الزيت (120 جرام)</option>
+                        <option value="cottage_100">جبن قريش (100 جرام)</option>
+                        <option value="rice_100">أرز أبيض مطبوخ (100 جرام)</option>
+                        <option value="oats_50">شوفان خام (50 جرام)</option>
+                        <option value="potato_150">بطاطس مسلوقة/مشوية (150 جرام)</option>
+                        <option value="banana_1">حبة موز متوسطة</option>
+                        <option value="whey_1">سكوب وي بروتين (30 جرام)</option>
+                    </select>
+                </div>
+                <div class="result-box" id="preset-meal-out">اختر الوجبة لعرض القيمة الغذائية والسعرات دايركت.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SCHEDULE TAB -->
+    <div id="schedule-tab" class="tab-content">
+        <div class="card">
+            <h2>جدول التمرين الأسبوعي</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اليوم</th>
+                        <th>التمرين / الاستهداف</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody id="weekly-table-body">
+                </tbody>
+            </table>
+            <br>
+            <button class="btn" onclick="saveSchedule()">حفظ التعديلات 💾</button>
+        </div>
+
+        <div class="card">
+            <h2>أشهر أنظمة التدريب</h2>
             <ul>
-                <li><a href="#dash">السعرات</a></li>
-                <li><a href="#attendance">حضور الجيم</a></li>
-                <li><a href="#weight">تتبع الوزن</a></li>
-                <li><a href="#splits">الأنظمة والأيام</a></li>
-                <li><a href="#nutrition">مصادر الأكل</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- لوحة التحكم والسعرات -->
-    <section id="dash" class="section">
-        <h2 id="greetingText" class="section-title">أهلاً بك يا بطل!</h2>
-        <p class="section-subtitle">احتياجك اليومي الموصى به بناءً على بياناتك</p>
-
-        <div class="dashboard-grid">
-            <div class="dash-card">
-                <p>السعرات الحرارية</p>
-                <span id="dashCal">0</span>
-                <p style="font-size:0.8rem; color:#94a3b8;">سعرة / يوم</p>
-            </div>
-            <div class="dash-card">
-                <p>البروتين اليومي</p>
-                <span id="dashProt">0</span>g
-                <p style="font-size:0.8rem; color:#94a3b8;">بناء الألياف</p>
-            </div>
-            <div class="dash-card">
-                <p>الكاربوهيدرات</p>
-                <span id="dashCarb">0</span>g
-                <p style="font-size:0.8rem; color:#94a3b8;">مصدر الطاقة</p>
-            </div>
-            <div class="dash-card">
-                <p>الدهون الصحية</p>
-                <span id="dashFat">0</span>g
-                <p style="font-size:0.8rem; color:#94a3b8;">دعم الهرمونات</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- جدول تسجيل حضور الجيم الأسبوعي -->
-    <section id="attendance" class="section" style="background: #0d1322;">
-        <h2 class="section-title">📅 جدول الالتزام الأسبوعي بالجيم</h2>
-        <p class="section-subtitle">اضغط على اليوم لتسجيل حضورك في الجيم وتتبع التزامك</p>
-
-        <div class="days-grid" id="daysGrid">
-            <!-- سيتم توليد أيام الأسبوع هنا -->
-        </div>
-    </section>
-
-    <!-- جدول متابعة الميزان وتطور الوزن -->
-    <section id="weight" class="section">
-        <h2 class="section-title">⚖️ سجل متابعة الوزن (الميزان)</h2>
-        <p class="section-subtitle">سجل وزنك أسبوعياً لمتابعة مدى تقدمك وتطور بنيتك الجسدية</p>
-
-        <div class="weight-tracker-container">
-            <div class="input-inline">
-                <input type="number" id="newWeight" placeholder="الوزن الحالي (كجم)" step="0.1">
-                <button onclick="addWeightLog()" class="btn-blue">حفظ الميزان</button>
-            </div>
-
-            <ul id="weightList" class="weight-list">
-                <!-- سيتم إدراج سجلات الوزن هنا -->
+                <li><strong>Push Pull Legs (PPL):</strong> تقسيم أيام دفع، سحب، وأرجل.</li>
+                <li><strong>Arnold Split:</strong> صدر وظهر / أكتاف وذراعين / أرجل.</li>
+                <li><strong>Upper / Lower:</strong> تقسيم الجزء العلوي والسفلي.</li>
             </ul>
         </div>
-    </section>
+    </div>
 
-    <!-- أنظمة التمارين والأيام بالتفصيل -->
-    <section id="splits" class="section" style="background: #0d1322;">
-        <h2 class="section-title">🏋️ أنظمة التدريب وتوزيع الأيام</h2>
-        <p class="section-subtitle">اختر النظام لمعرفة الترتيب الصحيح للأيام والتمرين لكل عضلة</p>
+    <!-- 4. NUTRITION TAB (WITH WATER TRACKER) -->
+    <div id="nutrition-tab" class="tab-content">
+        <div class="grid-layout">
+            <div class="card">
+                <h2>💧 متتبع واحتياج المية اليومي</h2>
+                <button class="btn" onclick="calcWaterNeed()">احسب احتياجك اليومي من المية</button>
+                <div class="result-box" id="water-target-out">احسب الاحتياج أولاً.</div>
+                <br>
+                <div style="text-align: center;">
+                    <p style="font-size:1.1rem; color:var(--text-main); font-weight:bold;">ما تم شربه اليوم:</p>
+                    <div style="font-size: 2rem; color:var(--primary-blue); font-weight:bold; margin:10px 0;" id="water-counter">0 / 0 لتر</div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn" onclick="addWater(0.25)">+ كوباية (250 مل)</button>
+                        <button class="btn" style="background:#ef4444;" onclick="resetWater()">إعادة ضبط</button>
+                    </div>
+                </div>
+            </div>
 
-        <div class="splits-nav">
-            <button class="split-btn active" onclick="loadSplit('ppl')">PPL (Push/Pull/Legs)</button>
-            <button class="split-btn" onclick="loadSplit('arnold')">PPL + Arnold Split</button>
-            <button class="split-btn" onclick="loadSplit('upperlower')">Upper / Lower</button>
-            <button class="split-btn" onclick="loadSplit('pro')">Pro Split (تجميع)</button>
-        </div>
-
-        <div id="scheduleContainer" class="days-schedule">
-            <!-- أيام النظام كروت هنا -->
-        </div>
-    </section>
-
-    <!-- قسم مصادر الأكل والأغذية -->
-    <section id="nutrition" class="section">
-        <h2 class="section-title">🥗 دليل الأطعمة ومصادر التغذية</h2>
-        <p class="section-subtitle">أهم المصادر الغذائية لتغطي بها احتياجك اليومي من الماكروز</p>
-
-        <div class="food-grid">
-            <div class="food-card protein">
-                <h3>🥩 مصادر البروتين</h3>
+            <div class="card">
+                <h2>🥩 دليل البروتين والماكروز الشامل</h2>
+                <p style="color:var(--text-main);">الاحتياج اليومي: **1.6 إلى 2.2 جرام** لكل كجم من وزن جسمك لبناء العضلات.</p>
+                <br>
+                <h3>مصادر بروتين حيوانية عالية القيمة:</h3>
                 <ul>
-                    <li>• صدور الدجاج (31g بروتين لكل 100g)</li>
-                    <li>• اللحم البقري الصافي (26g بروتين لكل 100g)</li>
-                    <li>• سمك التونة والبلطي</li>
-                    <li>• البيض الكامل والبيض الأبيض</li>
-                    <li>• الجبن القريش واللبن اليوناني</li>
-                    <li>• ويه بروتين (Protein Powder)</li>
+                    <li><strong>صدور الدجاج:</strong> 100g = 31g بروتين (أعلى مصدر صافي للماكروز).</li>
+                    <li><strong>اللحم البقري الأحمر الصافي:</strong> 100g = 26g بروتين + حديد وزينك طبيعي.</li>
+                    <li><strong>السمك والتونة:</strong> غنية بالبروتين ومصدر ممتاز للأوميجا 3.</li>
+                    <li><strong>البيض الكامل:</strong> البيضة = 6g بروتين (أعلى جودة حيوانية وتنوع للأحماض الأمينية).</li>
+                    <li><strong>الجبن القريش:</strong> غني ببروتين الكازين البطئ الامتصاص (ممتاز قبل النوم).</li>
+                </ul>
+                <br>
+                <h3>مصادر بروتين نباتية مساعدة:</h3>
+                <p>العدس، الفول، الحمص، الشوفان، وزبدة الفول السوداني (تُحسب ضمن الماكروز اليومية).</p>
+            </div>
+
+            <div class="card">
+                <h2>🍚 الكاربوهيدرات والدهون الصحية</h2>
+                <h3>الكاربوهيدرات (طاقة التمرين):</h3>
+                <ul>
+                    <li><strong>كارب معقد (قبل التمرين بـ 2-3 ساعات):</strong> الأرز الأبيض/البني، الشوفان، البطاطا الحلوة، والبطاطس المسلوقة. (يقوم بإمداد الجسم بطاقة ممتدة).</li>
+                    <li><strong>كارب سريع (بعد التمرين مباشرة):</strong> الموز، التمر، أو العسل. (لإعادة تعبئة مخازن الجليكوجين سريعاً).</li>
+                </ul>
+                <br>
+                <h3>🥑 الدهون الصحية (دعم الهرمونات والتستوستيرون):</h3>
+                <ul>
+                    <li><strong>المصادر:</strong> صفار البيض، زيت الزيتون البكر، المكسرات (لوز/عين جمل)، والأفوكادو.</li>
+                    <li><strong>الفائدة:</strong> أساسية جداً لإنتاج هرمون التستوستيرون وصحة المفاصل.</li>
                 </ul>
             </div>
 
-            <div class="food-card carbs">
-                <h3>🍚 مصادر الكاربوهيدرات</h3>
+            <div class="card">
+                <h2>💊 موسوعة الفيتامينات والمعادن والمصادر</h2>
                 <ul>
-                    <li>• الأرز الأبيض والبني</li>
-                    <li>• الشوفان الكامل</li>
-                    <li>• البطاطس والبطاطا الحلوة</li>
-                    <li>• المكرونة وعيش الشوفان/البلدي</li>
-                    <li>• الموز والمخبوزات الصحية</li>
-                </ul>
-            </div>
-
-            <div class="food-card fats">
-                <h3>🥑 مصادر الدهون الصحية</h3>
-                <ul>
-                    <li>• زيت الزيتون البكر</li>
-                    <li>• المكسرات (الموز، اللوز، الجوز)</li>
-                    <li>• صفار البيض</li>
-                    <li>• الأفوكادو</li>
-                    <li>• زبدة الفول السوداني الطبيعية</li>
+                    <li><strong>فيتامين D3:</strong> أساسي للتستوستيرون وقوة العظام. <br><small style="color:var(--primary-blue)">المصدر الطبيعي: الشمس صباحاً، صفار البيض، الأسماك الزيتية | مكمل: أقراص D3 من الصيدلية.</small></li>
+                    <br>
+                    <li><strong>الأوميجا 3 (Omega 3):</strong> لتقليل التهابات المفاصل وصحة القلب. <br><small style="color:var(--primary-blue)">المصدر الطبيعي: التونة، السلمون، المكسرات | مكمل: زيت السمك (Fish Oil).</small></li>
+                    <br>
+                    <li><strong>الزنك (Zinc):</strong> لزيادة التستوستيرون وتحسين التعافي. <br><small style="color:var(--primary-blue)">المصدر الطبيعي: اللحوم الحمراء، المكسرات | مكمل: أقراص الزنك أو ZMA.</small></li>
+                    <br>
+                    <li><strong>المغنيسيوم (Magnesium):</strong> لاسترخاء العضلات وعمق النوم. <br><small style="color:var(--primary-blue)">المصدر الطبيعي: الموز، الشوكولاتة الداكنة، الشوفان | مكمل: Magnesium Citrate/Glycinate.</small></li>
+                    <br>
+                    <li><strong>فيتامين C:</strong> تقوية المناعة وتقليل هرمون الكورتيزول. <br><small style="color:var(--primary-blue)">المصدر الطبيعي: الجوافة، البرتقال، الفلفل الرومي | مكمل: C-Retard بالصيدلية.</small></li>
+                    <br>
+                    <li><strong>الكرياتين (Creatine Monohydrate):</strong> المكمل رقم 1 لزيادة القوة والحجم العضلي. <br><small style="color:var(--primary-blue)">جرعة يومية: 3 إلى 5 جرام في أي وقت مع كمية مياه كافية.</small></li>
                 </ul>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- الفوتر -->
-    <footer>
-        <p>إنشاء Omar Hany</p>
-        <small>&lt; Designed & Developed by Omar Hany &copy; 2026 &gt;</small>
-    </footer>
+    <!-- 5. TRACKER TAB -->
+    <div id="tracker-tab" class="tab-content">
+        <div class="grid-layout">
+            <div class="card">
+                <h2>تسجيل الوزن الدوري (تاريخ تلقائي)</h2>
+                <p style="margin-bottom: 12px;">أدخل وزنك فقط، وسيقوم النظام بتسجيله بتاريخ اليوم تلقائياً دون الحاجة لإدخال التاريخ.</p>
+                
+                <div class="input-group">
+                    <label>الوزن الحالي (كجم)</label>
+                    <input type="number" id="weight-val" placeholder="مثال: 72.5">
+                </div>
+                <button class="btn" onclick="addWeightRecord()">تسجيل الوزن اليوم ⚖️</button>
+                <br>
+                <ul id="weight-history-list" class="history-list"></ul>
+            </div>
+
+            <div class="card">
+                <h2>صور التطور (Progress Photos)</h2>
+                <div class="input-group">
+                    <label>اختر صورة لمتابعة شكل الجسم</label>
+                    <input type="file" accept="image/*" onchange="previewImage(event)">
+                </div>
+                <img id="img-preview" style="max-width:100%; border-radius:10px; display:none; margin-top:10px;">
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. TIMER TAB -->
+    <div id="timer-tab" class="tab-content">
+        <div class="card" style="text-align: center;">
+            <h2>مؤقت الراحة بين المجموعات</h2>
+            <div class="timer-display" id="timer-display">00:00</div>
+            <div class="timer-btn-group">
+                <button class="btn" onclick="startTimer(30)">30 ثانية</button>
+                <button class="btn" onclick="startTimer(60)">60 ثانية</button>
+                <button class="btn" onclick="startTimer(90)">90 ثانية</button>
+                <button class="btn" style="background:#ef4444;" onclick="stopTimer()">إيقاف</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // حفظ البيانات وحساب الماكروز
-        document.getElementById('userDataForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        function openTab(evt, tabId) {
+            const tabs = document.querySelectorAll('.tab-content');
+            const btns = document.querySelectorAll('.tab-btn');
+            tabs.forEach(t => t.classList.remove('active'));
+            btns.forEach(b => b.classList.remove('active'));
             
-            const name = document.getElementById('userName').value;
-            const age = parseFloat(document.getElementById('userAge').value);
-            const height = parseFloat(document.getElementById('userHeight').value);
-            const weight = parseFloat(document.getElementById('userWeight').value);
-            const goal = document.getElementById('userGoal').value;
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
 
-            let bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-            let tdee = bmr * 1.55;
+        function saveProfile() {
+            const name = document.getElementById('user-name').value;
+            const age = document.getElementById('user-age').value;
+            const height = document.getElementById('user-height').value;
+            const weight = document.getElementById('user-weight').value;
+            const goal = document.getElementById('user-goal').value;
 
-            if(goal === 'bulk') tdee += 400;
-            else if(goal === 'cut') tdee -= 400;
+            const profileData = { name, age, height, weight, goal };
+            localStorage.setItem('mygym_profile', JSON.stringify(profileData));
+            updateUI();
+            alert('تم حفظ البيانات بنجاح! 💪');
+        }
 
-            let protein = weight * 2.2;
-            let fats = weight * 0.9;
-            let carbs = (tdee - ((protein * 4) + (fats * 9))) / 4;
-
-            document.getElementById('greetingText').innerText = `أهلاً يا دبابة (${name})! 👋`;
-            document.getElementById('dashCal').innerText = Math.round(tdee);
-            document.getElementById('dashProt').innerText = Math.round(protein);
-            document.getElementById('dashCarb').innerText = Math.round(carbs);
-            document.getElementById('dashFat').innerText = Math.round(fats);
-
-            document.getElementById('welcomeModal').classList.add('hidden');
-        });
-
-        // جدول حضور الجيم
-        const weekDays = ["السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
-        const daysContainer = document.getElementById('daysGrid');
-
-        weekDays.forEach(day => {
-            const dayCard = document.createElement('div');
-            dayCard.className = 'day-card';
-            dayCard.innerHTML = `
-                <h4>${day}</h4>
-                <div class="day-status">لم أذهب ❌</div>
-                <button onclick="toggleAttendance(this)" class="btn-blue" style="margin-top:8px; padding:4px 8px; font-size:0.8rem;">تغيير الحالة</button>
-            `;
-            daysContainer.appendChild(dayCard);
-        });
-
-        function toggleAttendance(btn) {
-            const card = btn.parentElement;
-            const statusText = card.querySelector('.day-status');
-            
-            if(card.classList.contains('attended')) {
-                card.classList.remove('attended');
-                statusText.innerText = 'لم أذهب ❌';
-            } else {
-                card.classList.add('attended');
-                statusText.innerText = 'تم الذهاب 💪';
+        function loadProfile() {
+            const saved = localStorage.getItem('mygym_profile');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('user-name').value = data.name || '';
+                document.getElementById('user-age').value = data.age || '';
+                document.getElementById('user-height').value = data.height || '';
+                document.getElementById('user-weight').value = data.weight || '';
+                document.getElementById('user-goal').value = data.goal || 'تضخيم';
+                updateUI();
             }
         }
 
-        // متابعة الوزن
-        function addWeightLog() {
-            const w = document.getElementById('newWeight').value;
-            if(!w) return;
-
-            const ul = document.getElementById('weightList');
-            const li = document.createElement('li');
-            li.innerHTML = `<span>الوزن: <strong>${w} كجم</strong></span> <small style="color:#38bdf8;">${new Date().toLocaleDateString('ar-EG')}</small>`;
-            ul.prepend(li);
-
-            document.getElementById('newWeight').value = '';
+        function updateUI() {
+            const saved = localStorage.getItem('mygym_profile');
+            if (saved) {
+                const data = JSON.parse(saved);
+                const userName = data.name || 'بطل';
+                document.getElementById('header-welcome').innerText = `أهلاً بك يا ${userName} 👋`;
+                document.getElementById('dash-greeting').innerHTML = `<strong>الاسم:</strong> ${userName}`;
+                document.getElementById('dash-info').innerHTML = `<strong>البيانات:</strong> الطول: ${data.height || '--'} سم | الوزن: ${data.weight || '--'} كجم | الهدف: ${data.goal || '--'}`;
+            }
         }
 
-        // تفاصيل أيام الأنظمة التدريبية
-        const splitsScheduleData = {
-            ppl: [
-                { day: "اليوم الأول: دفع (Push)", exercises: ["صدر عالي بالبار", "تجميع صدر بالدمبلز", "ضغط أكتاف أمامي", "رفرفة جانبي للأكتاف", "ترايسبس بالحبل"] },
-                { day: "اليوم الثاني: سحب (Pull)", exercises: ["سحب عالي للظهر (Lat Pulldown)", "سحب أرضي بالبار (Barbell Row)", "سحب للكتف الخلفي (Face Pull)", "بايسبس بالبار", "هامركيرل للساعد"] },
-                { day: "اليوم الثالث: أرجل (Legs)", exercises: ["سكوات بالبار (Squat)", "كبس أرجل (Leg Press)", "تمديد أمامي (Leg Extension)", "تجميع خلفي (Leg Curl)", "سمانة واقف"] },
-                { day: "اليوم الرابع: راحة (Rest)", exercises: ["استشفاء، تغذية جيدة، مشي خفيف أو نوم كافٍ."] },
-                { day: "اليوم الخامس: كرر الدفع والسحب والأرجل", exercises: ["تكرار الجدول بشكل تدوري مع التبديل في الزوايا."] }
-            ],
-            arnold: [
-                { day: "اليوم الأول: صدر وظهر (Chest & Back)", exercises: ["سوبر سيت: بنش بريس + سحب عالي للظهر", "سوبر سيت: تجميع صدر دمبلز + سحب أرضي", "بل أفر للصدر والظهر"] },
-                { day: "اليوم الثاني: أكتاف وذراعين (Shoulders & Arms)", exercises: ["ضغط أرنولد للأكتاف", "رفرفة جانبي خفيف", "سوبر سيت: بايسبس بار + ترايسبس حبل", "هامركيرل + ترايسبس فوق الرأس"] },
-                { day: "اليوم الثالث: أرجل (Legs)", exercises: ["سكوات عميق", "طعن بالدمبلز (Lunges)", "خلفيات أرجل", "سمانة"] },
-                { day: "اليوم الرابع: راحة (Rest)", exercises: ["استراحة واستشفاء عضلات الجسم."] }
-            ],
-            upperlower: [
-                { day: "اليوم الأول: الجزء العلوي (Upper)", exercises: ["ضغط صدر بالبار", "سحب عالي للظهر", "ضغط كتف بالدمبلز", "ترايسبس وبايسبس"] },
-                { day: "اليوم الثاني: الجزء السفلي (Lower)", exercises: ["سكوات بار", "تجميع خلفي أرجل", "كبس أرجل", "بطن وسمانة"] },
-                { day: "اليوم الثالث: راحة (Rest)", exercises: ["راحة تامة."] },
-                { day: "اليوم الرابع: تكرار العلوي والسفلي", exercises: ["إعادة التمرين بتركيز على أوزان أعلى."] }
-            ],
-            pro: [
-                { day: "اليوم الأول: صدر (Chest)", exercises: ["4 تمارين مختلفة للصدر بزوايا متعددة + بطن."] },
-                { day: "اليوم الثاني: ظهر (Back)", exercises: ["4 تمارين استهداف سحب وسُمك الظهر."] },
-                { day: "اليوم الثالث: أكتاف (Shoulders)", exercises: ["أمامي، جانبي، وخلفي مع ترابيس."] },
-                { day: "اليوم الرابع: أرجل (Legs)", exercises: ["تمرن كوادز، خلفيات، وسمانة بالكامل."] },
-                { day: "اليوم الخامس: ذراعين (Arms)", exercises: ["بايسبس وترايسبس وسواعد."] }
-            ]
+        /* 1. BMI CALCULATOR */
+        function calcBMI() {
+            const savedProfile = localStorage.getItem('mygym_profile');
+            const history = JSON.parse(localStorage.getItem('mygym_weights')) || [];
+            
+            if (!savedProfile) return alert('برجاء إدخال طولك في الملف الشخصي أولاً!');
+            const profile = JSON.parse(savedProfile);
+            
+            let currentWeight = profile.weight;
+            if (history.length > 0) {
+                currentWeight = history[history.length - 1].val;
+            }
+
+            const w = parseFloat(currentWeight);
+            const h = parseFloat(profile.height) / 100;
+
+            if (w && h) {
+                const bmi = (w / (h * h)).toFixed(1);
+                let state = bmi < 18.5 ? 'نحافة' : bmi < 25 ? 'وزن مثالي' : 'زيادة وزن';
+                document.getElementById('bmi-out').innerHTML = `<strong>مؤشر كتلة الجسم (BMI):</strong> ${bmi} <br><strong>الحالة:</strong> (${state}) <br><small>محسوبة بناءً على أحدث وزن: ${w} كجم</small>`;
+            } else {
+                alert('يرجى التأكد من إدخال الطول والوزن بشكل صحيح!');
+            }
+        }
+
+        /* BODY FAT CALCULATOR (US Navy Method) */
+        function calcBodyFat() {
+            const savedProfile = localStorage.getItem('mygym_profile');
+            if (!savedProfile) return alert('برجاء إدخال طولك في الملف الشخصي أولاً!');
+            const profile = JSON.parse(savedProfile);
+
+            const waist = parseFloat(document.getElementById('waist-cm').value);
+            const neck = parseFloat(document.getElementById('neck-cm').value);
+            const height = parseFloat(profile.height);
+
+            if (waist && neck && height) {
+                if (waist <= neck) {
+                    return alert('محيط الوسط يجب أن يكون أكبر من محيط الرقبة!');
+                }
+                // Navy Formula for Men
+                let bodyFat = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+                bodyFat = bodyFat.toFixed(1);
+
+                let status = bodyFat < 10 ? 'نسبة منخفضة جداً (تنسيق رياضي حاد)' : bodyFat < 18 ? 'نسبة فتنس مثالية (عضلات واضحة)' : bodyFat < 25 ? 'نسبة متوسطة' : 'نسبة مرتفعة';
+
+                document.getElementById('fat-out').innerHTML = `
+                    <strong>نسبة الدهون التقريبية:</strong> ${bodyFat}%<br>
+                    <strong>التصنيف:</strong> ${status}
+                `;
+            } else {
+                alert('برجاء إدخال مقاس الوسط والرقبة بشكل صحيح!');
+            }
+        }
+
+        /* 2. PRESET MEALS CALCULATOR */
+        const mealsData = {
+            chicken_100: { name: "صدور دجاج مطبوخة (100g)", p: 31, c: 0, f: 3.6, cal: 165 },
+            meat_100: { name: "لحم بقري صافي (100g)", p: 26, c: 0, f: 10, cal: 200 },
+            eggs_2: { name: "عدد 2 بيضة مسلوقة كاملة", p: 12, c: 1, f: 10, cal: 140 },
+            egg_whites_3: { name: "عدد 3 بياض بيض", p: 11, c: 0.5, f: 0, cal: 50 },
+            tuna_can: { name: "علبة تونة مصفاة (120g)", p: 26, c: 0, f: 1, cal: 116 },
+            cottage_100: { name: "جبن قريش (100g)", p: 11, c: 3.4, f: 4.3, cal: 98 },
+            rice_100: { name: "أرز أبيض مطبوخ (100g)", p: 2.7, c: 28, f: 0.3, cal: 130 },
+            oats_50: { name: "شوفان خام (50g)", p: 8, c: 33, f: 3.5, cal: 194 },
+            potato_150: { name: "بطاطس مسلوقة (150g)", p: 3, c: 26, f: 0.2, cal: 115 },
+            banana_1: { name: "حبة موز متوسطة", p: 1.3, c: 27, f: 0.3, cal: 105 },
+            whey_1: { name: "سكوب وي بروتين (30g)", p: 24, c: 2, f: 1.5, cal: 120 }
         };
 
-        function loadSplit(key) {
-            document.querySelectorAll('.split-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+        function calcPresetMeal() {
+            const key = document.getElementById('preset-meal').value;
+            const out = document.getElementById('preset-meal-out');
+            
+            if (key === 'custom' || !mealsData[key]) {
+                out.innerText = "اختر الوجبة لعرض القيمة الغذائية والسعرات دايركت.";
+                return;
+            }
 
-            const container = document.getElementById('scheduleContainer');
-            container.innerHTML = '';
+            const m = mealsData[key];
+            out.innerHTML = `
+                <strong>الوجبة:</strong> ${m.name}<br>
+                🔥 <strong>السعرات:</strong> ${m.cal} kcal<br>
+                🥩 <strong>بروتين:</strong> ${m.p}g | 🍚 <strong>كارب:</strong> ${m.c}g | 🥑 <strong>دهون:</strong> ${m.f}g
+            `;
+        }
 
-            splitsScheduleData[key].forEach(item => {
-                let listHtml = item.exercises.map(ex => `<li>• ${ex}</li>`).join('');
-                container.innerHTML += `
-                    <div class="schedule-card">
-                        <h3>${item.day}</h3>
-                        <ul>${listHtml}</ul>
-                    </div>
-                `;
+        function calcCalories() {
+            const saved = localStorage.getItem('mygym_profile');
+            if (!saved) return alert('برجاء إدخال بياناتك في الملف الشخصي أولاً!');
+            const data = JSON.parse(saved);
+            const w = parseFloat(data.weight);
+            const h = parseFloat(data.height);
+            const a = parseFloat(data.age);
+            const act = parseFloat(document.getElementById('activity-level').value);
+
+            if (w && h && a) {
+                let bmr = 10 * w + 6.25 * h - 5 * a + 5;
+                let tdee = Math.round(bmr * act);
+                if (data.goal === 'تضخيم') tdee += 400;
+                if (data.goal === 'تنشيف') tdee -= 400;
+
+                document.getElementById('cal-out').innerText = `الاحتياج اليومي لهدف (${data.goal}): ${tdee} سعرة حرارية.`;
+                document.getElementById('dash-target-cal').innerHTML = `<strong>السعرات المقترحة:</strong> ${tdee} kcal`;
+            }
+        }
+
+        /* WATER TRACKER */
+        let currentWater = parseFloat(localStorage.getItem('mygym_water_drank')) || 0;
+        let targetWater = 3.0;
+
+        function calcWaterNeed() {
+            const saved = localStorage.getItem('mygym_profile');
+            const history = JSON.parse(localStorage.getItem('mygym_weights')) || [];
+            if (!saved) return alert('برجاء إدخال بياناتك في الملف الشخصي أولاً!');
+            
+            const profile = JSON.parse(saved);
+            let w = parseFloat(profile.weight);
+            if (history.length > 0) w = parseFloat(history[history.length - 1].val);
+
+            if (w) {
+                // Formula: ~35ml to 40ml per kg for athletes
+                targetWater = ((w * 0.04)).toFixed(1);
+                document.getElementById('water-target-out').innerHTML = `<strong>احتياجك اليومي الموصى به:</strong> ${targetWater} لتر مية يومياً.`;
+                updateWaterDisplay();
+            }
+        }
+
+        function addWater(amount) {
+            currentWater += amount;
+            localStorage.setItem('mygym_water_drank', currentWater);
+            updateWaterDisplay();
+        }
+
+        function resetWater() {
+            currentWater = 0;
+            localStorage.setItem('mygym_water_drank', 0);
+            updateWaterDisplay();
+        }
+
+        function updateWaterDisplay() {
+            document.getElementById('water-counter').innerText = `${currentWater.toFixed(2)} / ${targetWater} لتر`;
+        }
+
+        /* 3. SCHEDULE */
+        const days = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
+        function initSchedule() {
+            const tbody = document.getElementById('weekly-table-body');
+            tbody.innerHTML = '';
+            const saved = JSON.parse(localStorage.getItem('mygym_schedule')) || {};
+
+            days.forEach(day => {
+                const workout = saved[day]?.workout || '';
+                const isRest = saved[day]?.isRest ? 'selected' : '';
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${day}</strong></td>
+                        <td><input type="text" id="workout-${day}" value="${workout}" placeholder="العضلة / التمرين"></td>
+                        <td>
+                            <select id="rest-${day}">
+                                <option value="false">تمرين 💪</option>
+                                <option value="true" ${isRest}>راحة ☕</option>
+                            </select>
+                        </td>
+                    </tr>`;
             });
         }
 
-        // تحميل النظام الأول تلقائياً
-        loadSplit('ppl');
+        function saveSchedule() {
+            const schedule = {};
+            days.forEach(day => {
+                const workout = document.getElementById(`workout-${day}`).value;
+                const isRest = document.getElementById(`rest-${day}`).value === 'true';
+                schedule[day] = { workout, isRest };
+            });
+            localStorage.setItem('mygym_schedule', JSON.stringify(schedule));
+            alert('تم حفظ الجدول بنجاح! 📅');
+        }
+
+        /* 4. AUTOMATIC DATE WEIGHT TRACKER */
+        function addWeightRecord() {
+            const val = document.getElementById('weight-val').value;
+            if (!val) return alert('برجاء كتابة الوزن أولاً!');
+
+            const today = new Date().toISOString().split('T')[0];
+
+            const history = JSON.parse(localStorage.getItem('mygym_weights')) || [];
+            history.push({ date: today, val: val });
+            localStorage.setItem('mygym_weights', JSON.stringify(history));
+
+            document.getElementById('weight-val').value = '';
+            renderWeightHistory();
+            alert(`تم تسجيل وزن ${val} كجم بتاريخ اليوم (${today}) بنجاح! ⚖️`);
+        }
+
+        function renderWeightHistory() {
+            const history = JSON.parse(localStorage.getItem('mygym_weights')) || [];
+            const list = document.getElementById('weight-history-list');
+            list.innerHTML = '';
+            
+            if (history.length === 0) {
+                list.innerHTML = '<li style="justify-content:center; color:var(--text-muted);">لا توجد أوزان مسجلة بعد.</li>';
+                return;
+            }
+
+            history.slice().reverse().forEach((item) => {
+                list.innerHTML += `
+                    <li>
+                        <span>📅 <strong>${item.date}</strong></span>
+                        <span>⚖️ <strong>${item.val} كجم</strong></span>
+                    </li>`;
+            });
+        }
+
+        function previewImage(e) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const img = document.getElementById('img-preview');
+                img.src = reader.result;
+                img.style.display = 'block';
+            };
+            reader.readAsDataURL(e.target.files[0]);
+        }
+
+        /* 5. TIMER */
+        let timerInterval;
+        function startTimer(sec) {
+            clearInterval(timerInterval);
+            let time = sec;
+            const display = document.getElementById('timer-display');
+            timerInterval = setInterval(() => {
+                let m = Math.floor(time / 60);
+                let s = time % 60;
+                display.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+                if (--time < 0) {
+                    clearInterval(timerInterval);
+                    display.innerText = "انتهى الوقت! 💪";
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('timer-display').innerText = "00:00";
+        }
+
+        window.onload = function() {
+            loadProfile();
+            initSchedule();
+            renderWeightHistory();
+            calcWaterNeed();
+        };
     </script>
 </body>
 </html>
